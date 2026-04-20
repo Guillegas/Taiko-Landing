@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --blue-accent: #2563eb;
+  --blue-deep: #1e40af;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #ffffff;
+  color: #111827;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Sora', sans-serif;
+}
+
+/* ── Orb animations ─────────────────────────────────────────── */
+@keyframes orb-float {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(30px, -40px) scale(1.05); }
+  66%       { transform: translate(-20px, 20px) scale(0.97); }
+}
+
+@keyframes orb-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-40px, 30px) scale(1.08); }
+  66%       { transform: translate(25px, -15px) scale(0.95); }
+}
+
+.orb-1 { animation: orb-float    14s ease-in-out infinite; }
+.orb-2 { animation: orb-float-2  18s ease-in-out infinite; }
+.orb-3 { animation: orb-float    22s ease-in-out infinite reverse; }
+
+/* ── Scroll reveal ──────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.reveal { opacity: 0; }
+.reveal.visible                  { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.reveal.visible.delay-1          { animation-delay: 0.1s; }
+.reveal.visible.delay-2          { animation-delay: 0.2s; }
+.reveal.visible.delay-3          { animation-delay: 0.35s; }
+.reveal.visible.delay-4          { animation-delay: 0.5s; }
+
+/* ── Navbar glass ───────────────────────────────────────────── */
+.glass-nav {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(6, 14, 34, 0.72);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.glass-nav.scrolled {
+  background: rgba(6, 14, 34, 0.92);
+}
+
+/* ── Nav link ───────────────────────────────────────────────── */
+.nav-link {
+  position: relative;
+  transition: color 0.2s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #60a5fa;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after { width: 100%; }
+.nav-link:hover        { color: #93c5fd; }
+
+/* ── Service & demo cards ───────────────────────────────────── */
+.service-card {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px rgba(37, 99, 235, 0.13);
+}
+
+.demo-card {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
+}
+.demo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(15, 30, 61, 0.15);
+}
+
+/* ── Gradient text ──────────────────────────────────────────── */
+.grad-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Primary button ─────────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37, 99, 235, 0.55);
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+.btn-primary:active { transform: translateY(0); }
+
+/* ── Noise texture overlay ──────────────────────────────────── */
+.noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* ── Input / textarea focus ─────────────────────────────────── */
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+/* ── Spin (Loader icon) ─────────────────────────────────────── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+.animate-spin { animation: spin 1s linear infinite; }
+
+/* ── Pulse (status dot) ─────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+.animate-pulse { animation: pulse 2s ease-in-out infinite; }

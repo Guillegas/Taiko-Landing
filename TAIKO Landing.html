@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TAIKO — Digitaliza tu negocio con IA</title>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue-accent: #2563eb;
+      --blue-deep: #1e40af;
+      --blue-navy: #0f1e3d;
+      --blue-hero: #060e22;
+    }
+    * { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: #ffffff; color: #111827; }
+    h1, h2, h3, h4 { font-family: 'Sora', sans-serif; }
+
+    /* Orb animations */
+    @keyframes orb-float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -40px) scale(1.05); }
+      66% { transform: translate(-20px, 20px) scale(0.97); }
+    }
+    @keyframes orb-float-2 {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(-40px, 30px) scale(1.08); }
+      66% { transform: translate(25px, -15px) scale(0.95); }
+    }
+    .orb-1 { animation: orb-float 14s ease-in-out infinite; }
+    .orb-2 { animation: orb-float-2 18s ease-in-out infinite; }
+    .orb-3 { animation: orb-float 22s ease-in-out infinite reverse; }
+
+    /* Scroll reveal */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; }
+    .reveal.visible { animation: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+    .reveal.visible.delay-1 { animation-delay: 0.1s; }
+    .reveal.visible.delay-2 { animation-delay: 0.2s; }
+    .reveal.visible.delay-3 { animation-delay: 0.35s; }
+    .reveal.visible.delay-4 { animation-delay: 0.5s; }
+
+    /* Navbar glass */
+    .glass-nav {
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(6, 14, 34, 0.72);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .glass-nav.scrolled {
+      background: rgba(6, 14, 34, 0.92);
+    }
+
+    /* Card hover */
+    .service-card {
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    }
+    .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 48px rgba(37, 99, 235, 0.13);
+    }
+
+    /* Demo card */
+    .demo-card {
+      transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
+    }
+    .demo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(15, 30, 61, 0.15);
+    }
+
+    /* Input focus */
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Gradient text */
+    .grad-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Button */
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(37,99,235,0.55);
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    /* Nav link hover */
+    .nav-link {
+      position: relative;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 2px;
+      background: #60a5fa;
+      transition: width 0.25s ease;
+    }
+    .nav-link:hover::after { width: 100%; }
+    .nav-link:hover { color: #93c5fd; }
+
+    /* Noise texture */
+    .noise::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+      z-index: 1;
+    }
+
+    /* Tweaks panel */
+    #tweaks-panel {
+      display: none;
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      background: white; border-radius: 16px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+      border: 1px solid #e5e7eb;
+      padding: 20px; width: 260px;
+      font-family: 'DM Sans', sans-serif;
+    }
+    #tweaks-panel.open { display: block; }
+    .tweak-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280; margin-bottom: 6px; display: block; }
+    .tweak-row { margin-bottom: 16px; }
+    .tweak-swatch { display: inline-block; width: 28px; height: 28px; border-radius: 8px; margin-right: 6px; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s; }
+    .tweak-swatch.active { border-color: #111; }
+    .tweak-select { width: 100%; padding: 6px 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 13px; font-family: inherit; }
+  </style>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'brand': '#2563eb',
+            'brand-deep': '#1e40af',
+            'brand-navy': '#0f1e3d',
+            'brand-hero': '#060e22',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+
+<div id="root"></div>
+<div id="tweaks-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <span style="font-family:'Sora',sans-serif;font-weight:700;font-size:15px;">Tweaks</span>
+    <button onclick="document.getElementById('tweaks-panel').classList.remove('open')" style="background:none;border:none;cursor:pointer;color:#9ca3af;font-size:18px;">×</button>
+  </div>
+  <div class="tweak-row">
+    <span class="tweak-label">Color de acento</span>
+    <span class="tweak-swatch active" style="background:#2563eb;" onclick="setAccent('#2563eb','#1d4ed8')"></span>
+    <span class="tweak-swatch" style="background:#0891b2;" onclick="setAccent('#0891b2','#0e7490')"></span>
+    <span class="tweak-swatch" style="background:#7c3aed;" onclick="setAccent('#7c3aed','#6d28d9')"></span>
+    <span class="tweak-swatch" style="background:#059669;" onclick="setAccent('#059669','#047857')"></span>
+  </div>
+  <div class="tweak-row">
+    <span class="tweak-label">Tipografía de títulos</span>
+    <select class="tweak-select" onchange="setFont(this.value)">
+      <option value="'Sora',sans-serif">Sora (por defecto)</option>
+      <option value="'DM Serif Display',serif">DM Serif Display</option>
+      <option value="'Outfit',sans-serif">Outfit</option>
+    </select>
+  </div>
+  <div class="tweak-row">
+    <span class="tweak-label">Estilo de hero</span>
+    <select class="tweak-select" onchange="setHeroStyle(this.value)">
+      <option value="dark">Oscuro (por defecto)</option>
+      <option value="gradient">Gradiente azul</option>
+      <option value="light">Claro elegante</option>
+    </select>
+  </div>
+</div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// Icons via lucide global
+const Icon = ({ name, size = 24, className = '' }) => {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current && window.lucide) {
+      ref.current.innerHTML = '';
+      const svg = lucide.createElement(lucide[name] || lucide['HelpCircle']);
+      svg.setAttribute('width', size);
+      svg.setAttribute('height', size);
+      ref.current.appendChild(svg);
+    }
+  }, [name, size]);
+  return <span ref={ref} className={className} style={{display:'inline-flex',alignItems:'center',justifyContent:'center'}} />;
+};
+
+// Scroll reveal hook
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+}
+
+// ── Navbar ──────────────────────────────────────────────────────────────────
+function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handler);
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  const links = ['Servicios', 'Demos', 'Nosotros', 'Contacto'];
+
+  const scrollTo = (id) => {
+    setMenuOpen(false);
+    const el = document.getElementById(id.toLowerCase());
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <nav className={`fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300 ${scrolled ? 'scrolled' : ''}`}>
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo */}
+        <div className="cursor-pointer" onClick={() => window.scrollTo({top:0,behavior:'smooth'})}>
+          <img src="uploads/logoTaiko-transparent.png" alt="TAIKO" style={{height:'38px',width:'auto',filter:'brightness(0) invert(1) drop-shadow(0 0 8px rgba(96,165,250,0.4))'}} />
+        </div>
+
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-8">
+          {links.map(l => (
+            <button key={l} onClick={() => scrollTo(l)} className="nav-link text-blue-100 text-sm font-medium" style={{background:'none',border:'none',cursor:'pointer',fontFamily:"'DM Sans',sans-serif"}}>
+              {l}
+            </button>
+          ))}
+        </div>
+
+        {/* CTA */}
+        <div className="hidden md:flex items-center gap-3">
+          <button onClick={() => scrollTo('Contacto')} className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-xl" style={{fontFamily:"'DM Sans',sans-serif",border:'none',cursor:'pointer'}}>
+            Solicitar Demo
+          </button>
+        </div>
+
+        {/* Mobile menu */}
+        <button className="md:hidden text-white" onClick={() => setMenuOpen(!menuOpen)} style={{background:'none',border:'none',cursor:'pointer'}}>
+          <Icon name={menuOpen ? 'X' : 'Menu'} size={22} />
+        </button>
+      </div>
+
+      {/* Mobile dropdown */}
+      {menuOpen && (
+        <div className="md:hidden px-6 pb-5 pt-2 flex flex-col gap-4" style={{borderTop:'1px solid rgba(255,255,255,0.08)'}}>
+          {links.map(l => (
+            <button key={l} onClick={() => scrollTo(l)} className="text-blue-100 text-base text-left font-medium" style={{background:'none',border:'none',cursor:'pointer',fontFamily:"'DM Sans',sans-serif"}}>
+              {l}
+            </button>
+          ))}
+          <button onClick={() => scrollTo('Contacto')} className="btn-primary text-white text-sm font-semibold px-5 py-2.5 rounded-xl w-fit" style={{fontFamily:"'DM Sans',sans-serif",border:'none',cursor:'pointer'}}>
+            Solicitar Demo
+          </button>
+        </div>
+      )}
+    </nav>
+  );
+}
+
+// ── Hero ─────────────────────────────────────────────────────────────────────
+function Hero() {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  return (
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden noise" style={{background:'#060e22'}}>
+      {/* Gradient orbs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="orb-1 absolute rounded-full" style={{width:'600px',height:'600px',top:'-100px',left:'-150px',background:'radial-gradient(circle, rgba(37,99,235,0.35) 0%, transparent 70%)',filter:'blur(40px)'}} />
+        <div className="orb-2 absolute rounded-full" style={{width:'500px',height:'500px',bottom:'-80px',right:'-100px',background:'radial-gradient(circle, rgba(30,64,175,0.4) 0%, transparent 70%)',filter:'blur(50px)'}} />
+        <div className="orb-3 absolute rounded-full" style={{width:'350px',height:'350px',top:'50%',left:'55%',background:'radial-gradient(circle, rgba(96,165,250,0.15) 0%, transparent 70%)',filter:'blur(60px)'}} />
+      </div>
+
+      {/* Grid overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{backgroundImage:'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)',backgroundSize:'80px 80px',zIndex:2}} />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 grid lg:grid-cols-2 gap-16 items-center">
+        {/* Left: copy */}
+        <div>
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-8" style={{background:'rgba(37,99,235,0.15)',border:'1px solid rgba(96,165,250,0.3)'}}>
+            <div className="w-1.5 h-1.5 rounded-full bg-blue-400" style={{animation:'pulse 2s infinite'}} />
+            <span className="text-blue-300 text-sm font-medium">SaaS para PYMES — Disponible ahora</span>
+          </div>
+
+          <h1 className="text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white leading-none tracking-tight mb-6" style={{letterSpacing:'-0.03em',lineHeight:'1.05'}}>
+            Digitaliza tu<br />
+            negocio con<br />
+            <span className="grad-text">Inteligencia</span><br />
+            <span className="grad-text">Artificial</span>
+          </h1>
+
+          <p className="text-blue-200 text-lg leading-relaxed mb-10 max-w-lg" style={{fontWeight:300}}>
+            Unimos gestión de catálogo inteligente y un asistente de IA que atiende a tus clientes las 24 horas. Sin conocimientos técnicos. Sin complicaciones.
+          </p>
+
+          <div className="flex flex-wrap gap-4">
+            <button onClick={() => scrollTo('demos')} className="btn-primary text-white font-semibold px-7 py-4 rounded-2xl text-base flex items-center gap-2.5" style={{fontFamily:"'DM Sans',sans-serif",border:'none',cursor:'pointer'}}>
+              <Icon name="Play" size={18} />
+              Ver Demos
+            </button>
+            <button onClick={() => scrollTo('servicios')} className="text-white font-medium px-7 py-4 rounded-2xl text-base flex items-center gap-2" style={{fontFamily:"'DM Sans',sans-serif",background:'rgba(255,255,255,0.07)',border:'1px solid rgba(255,255,255,0.12)',cursor:'pointer',transition:'all 0.2s'}}>
+              Nuestros servicios
+              <Icon name="ArrowRight" size={18} />
+            </button>
+          </div>
+
+          {/* Trust signals */}
+          <div className="flex items-center gap-6 mt-12 flex-wrap">
+            {[
+              {icon:'Shield', text:'Datos seguros'},
+              {icon:'Zap', text:'Configuración rápida'},
+              {icon:'Headphones', text:'Soporte incluido'},
+            ].map(({icon, text}) => (
+              <div key={text} className="flex items-center gap-2">
+                <Icon name={icon} size={16} className="text-blue-400" />
+                <span className="text-blue-300 text-sm">{text}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right: visual mockup */}
+        <div className="hidden lg:flex justify-center items-center">
+          <div className="relative">
+            {/* Main card */}
+            <div className="rounded-2xl p-6 w-80" style={{background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',backdropFilter:'blur(20px)'}}>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-white font-semibold text-sm">Asistente TAIKO</span>
+                <div className="flex gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <span className="text-green-400 text-xs">Online</span>
+                </div>
+              </div>
+              {/* Chat bubbles */}
+              <div className="space-y-3">
+                <div className="flex justify-end">
+                  <div className="rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm text-white max-w-48" style={{background:'#2563eb'}}>
+                    ¿Tienen el Toyota Corolla disponible?
+                  </div>
+                </div>
+                <div className="flex justify-start">
+                  <div className="rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm max-w-52" style={{background:'rgba(255,255,255,0.08)',color:'#e2e8f0'}}>
+                    ¡Sí! Tenemos 3 unidades disponibles. ¿Le interesa gasolina o híbrido? 🚗
+                  </div>
+                </div>
+                <div className="flex justify-end">
+                  <div className="rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm text-white max-w-44" style={{background:'#2563eb'}}>
+                    Híbrido, ¿cuál es el precio?
+                  </div>
+                </div>
+                <div className="flex justify-start items-end gap-2">
+                  <div className="rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm max-w-52" style={{background:'rgba(255,255,255,0.08)',color:'#e2e8f0'}}>
+                    El Corolla Hybrid 2025 parte desde 26.500€. ¿Quiere que le envíe la ficha completa?
+                  </div>
+                </div>
+              </div>
+              {/* Input */}
+              <div className="mt-4 flex items-center gap-2 rounded-xl px-3 py-2" style={{background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)'}}>
+                <span className="text-blue-300 text-sm flex-1 opacity-50">Escribe tu pregunta...</span>
+                <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{background:'#2563eb'}}>
+                  <Icon name="Send" size={13} className="text-white" />
+                </div>
+              </div>
+            </div>
+
+            {/* Floating badge */}
+            <div className="absolute -top-6 -right-6 rounded-2xl px-4 py-3" style={{background:'rgba(37,99,235,0.9)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.2)'}}>
+              <div className="flex items-center gap-2">
+                <Icon name="Bot" size={16} className="text-white" />
+                <span className="text-white text-xs font-semibold">IA con RAG</span>
+              </div>
+            </div>
+
+            {/* Bottom badge */}
+            <div className="absolute -bottom-5 -left-8 rounded-2xl px-4 py-3" style={{background:'rgba(15,30,61,0.9)',backdropFilter:'blur(20px)',border:'1px solid rgba(255,255,255,0.1)'}}>
+              <div className="flex items-center gap-2">
+                <Icon name="BookOpen" size={14} className="text-blue-400" />
+                <span className="text-blue-200 text-xs font-medium">Tu catálogo • siempre actualizado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2">
+        <span className="text-blue-400 text-xs tracking-widest uppercase">Descubrir</span>
+        <div className="w-px h-8 bg-gradient-to-b from-blue-400 to-transparent" />
+      </div>
+    </section>
+  );
+}
+
+// ── Services ────────────────────────────────────────────────────────────────
+function Services() {
+  const cards = [
+    {
+      icon: 'LayoutGrid',
+      title: 'Gestión de Catálogo',
+      description: 'Un panel de administración pensado para personas sin conocimientos técnicos. Añade, edita y organiza tus productos fácilmente. Importación masiva de productos mediante archivo CSV.',
+      highlights: ['Panel intuitivo sin código', 'Importación masiva CSV', 'Categorías y filtros', 'Fotos y descripciones'],
+      color: '#1e40af',
+    },
+    {
+      icon: 'MessageSquare',
+      title: 'Asistente Inteligente con IA',
+      description: 'Un chatbot que conoce tu catálogo en profundidad y responde a las preguntas de tus clientes en lenguaje natural, recomendando los productos adecuados en cada momento.',
+      highlights: ['Comprende lenguaje natural', 'Recomendaciones de producto', 'Disponible 24/7', 'Basado en tu catálogo real'],
+      color: '#1e3a8a',
+      featured: true,
+    },
+    {
+      icon: 'Smartphone',
+      title: 'Multiplataforma',
+      description: 'Lleva el asistente de IA a donde están tus clientes: tu web, WhatsApp o Telegram. Responde automáticamente las 24 horas, los 7 días de la semana, sin que tengas que estar pendiente del móvil.',
+      highlights: ['Integración con WhatsApp Business', 'Integración con Telegram', 'También en tu web', 'Sin instalación técnica'],
+      color: '#1e40af',
+    },
+  ];
+
+  return (
+    <section id="servicios" className="py-32 px-6" style={{background:'#f8faff'}}>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-20 reveal">
+          <span className="inline-block text-blue-600 text-sm font-semibold tracking-widest uppercase mb-4">Nuestros Servicios</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-5" style={{letterSpacing:'-0.025em'}}>
+            Todo lo que necesitas<br />en una sola plataforma
+          </h2>
+          <p className="text-gray-500 text-lg max-w-2xl mx-auto leading-relaxed">
+            Herramientas diseñadas para que cualquier comercio pueda digitalizarse, sin necesidad de un equipo técnico.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {cards.map((card, i) => (
+            <div key={card.title} className={`service-card reveal delay-${i+1} rounded-3xl p-8 ${card.featured ? 'text-white relative overflow-hidden' : 'bg-white'}`}
+              style={card.featured
+                ? {background:'linear-gradient(145deg, #1e3a8a, #1e40af)',boxShadow:'0 24px 60px rgba(30,64,175,0.35)'}
+                : {border:'1px solid #e8edf8'}
+              }
+            >
+              {card.featured && (
+                <div className="absolute top-0 right-0 w-64 h-64 rounded-full" style={{background:'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)',transform:'translate(40px,-40px)'}} />
+              )}
+              <div className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 relative z-10"
+                style={card.featured ? {background:'rgba(255,255,255,0.15)'} : {background:'#eff6ff'}}
+              >
+                <Icon name={card.icon} size={24} className={card.featured ? 'text-white' : 'text-blue-600'} />
+              </div>
+              <h3 className={`text-xl font-bold mb-3 relative z-10 ${card.featured ? 'text-white' : 'text-gray-900'}`} style={{letterSpacing:'-0.02em'}}>
+                {card.title}
+              </h3>
+              <p className={`text-sm leading-relaxed mb-6 relative z-10 ${card.featured ? 'text-blue-100' : 'text-gray-500'}`}>
+                {card.description}
+              </p>
+              <ul className="space-y-2 relative z-10">
+                {card.highlights.map(h => (
+                  <li key={h} className="flex items-center gap-2.5">
+                    <div className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={card.featured ? {background:'rgba(255,255,255,0.2)'} : {background:'#dbeafe'}}
+                    >
+                      <Icon name="Check" size={10} className={card.featured ? 'text-white' : 'text-blue-600'} />
+                    </div>
+                    <span className={`text-sm ${card.featured ? 'text-blue-100' : 'text-gray-600'}`}>{h}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Integrations ─────────────────────────────────────────────────────────────
+function Integrations() {
+  const channels = [
+    {
+      icon: 'MessageCircle',
+      name: 'WhatsApp Business',
+      color: '#25D366',
+      bg: 'rgba(37,211,102,0.1)',
+      border: 'rgba(37,211,102,0.25)',
+      description: 'Tu asistente responde en el chat de WhatsApp de tu negocio. Tus clientes preguntan como siempre y reciben respuestas inmediatas con información real de tu catálogo.',
+      badge: 'Disponible',
+    },
+    {
+      icon: 'Send',
+      name: 'Telegram',
+      color: '#229ED9',
+      bg: 'rgba(34,158,217,0.1)',
+      border: 'rgba(34,158,217,0.25)',
+      description: 'Conecta tu bot de Telegram con el catálogo de TAIKO. Ideal para negocios cuya comunidad ya usa Telegram como canal principal de comunicación.',
+      badge: 'Disponible',
+    },
+    {
+      icon: 'Globe',
+      name: 'Tu Web',
+      color: '#2563eb',
+      bg: 'rgba(37,99,235,0.1)',
+      border: 'rgba(37,99,235,0.25)',
+      description: 'Incrusta el widget de TAIKO en tu página web con una sola línea de código. El asistente aparece como un chat flotante listo para atender visitas.',
+      badge: 'Disponible',
+    },
+  ];
+
+  return (
+    <section className="py-24 px-6 relative overflow-hidden" style={{background:'#060e22'}}>
+      {/* Subtle orb */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute rounded-full" style={{width:'700px',height:'300px',top:'50%',left:'50%',transform:'translate(-50%,-50%)',background:'radial-gradient(ellipse, rgba(37,99,235,0.12) 0%, transparent 70%)',filter:'blur(40px)'}} />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16 reveal">
+          <span className="inline-block text-blue-400 text-sm font-semibold tracking-widest uppercase mb-4">Integraciones</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-5" style={{letterSpacing:'-0.025em'}}>
+            Tu asistente, donde<br />están tus clientes
+          </h2>
+          <p className="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed" style={{fontWeight:300}}>
+            Conecta TAIKO con WhatsApp, Telegram o tu web. Tu negocio atiende clientes <strong className="text-white font-medium">24 horas al día, 7 días a la semana</strong>, aunque estés durmiendo.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-14">
+          {channels.map((ch, i) => (
+            <div key={ch.name} className={`reveal delay-${i+1} rounded-2xl p-7`}
+              style={{background:'rgba(255,255,255,0.03)', border:`1px solid ${ch.border}`, transition:'transform 0.3s ease, box-shadow 0.3s ease'}}
+              onMouseEnter={e => { e.currentTarget.style.transform='translateY(-5px)'; e.currentTarget.style.boxShadow=`0 20px 40px ${ch.bg}`; }}
+              onMouseLeave={e => { e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow=''; }}
+            >
+              <div className="flex items-center justify-between mb-5">
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{background:ch.bg,border:`1px solid ${ch.border}`}}>
+                  <Icon name={ch.icon} size={22} style={{color:ch.color}} />
+                </div>
+                <span className="text-xs font-semibold px-3 py-1 rounded-full" style={{background:'rgba(34,197,94,0.12)',color:'#4ade80',border:'1px solid rgba(34,197,94,0.25)'}}>
+                  ✓ {ch.badge}
+                </span>
+              </div>
+              <h3 className="text-white font-bold text-lg mb-2" style={{letterSpacing:'-0.02em'}}>{ch.name}</h3>
+              <p className="text-blue-300 text-sm leading-relaxed" style={{fontWeight:300}}>{ch.description}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom banner */}
+        <div className="reveal rounded-3xl px-10 py-9 flex flex-col md:flex-row items-center justify-between gap-6"
+          style={{background:'linear-gradient(135deg, rgba(37,99,235,0.18), rgba(30,64,175,0.25))', border:'1px solid rgba(96,165,250,0.2)'}}>
+          <div className="flex items-center gap-5">
+            <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{background:'rgba(37,99,235,0.3)'}}>
+              <Icon name="Clock" size={26} className="text-blue-300" />
+            </div>
+            <div>
+              <h4 className="text-white font-bold text-xl mb-1" style={{letterSpacing:'-0.02em'}}>Atención al cliente 24/7, sin coste adicional</h4>
+              <p className="text-blue-300 text-sm">El asistente nunca descansa. Responde al instante en WhatsApp, Telegram o tu web, con la información actualizada de tu catálogo.</p>
+            </div>
+          </div>
+          <button
+            onClick={() => { const el = document.getElementById('contacto'); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }}
+            className="btn-primary flex-shrink-0 text-white font-semibold px-7 py-3.5 rounded-xl text-sm flex items-center gap-2 whitespace-nowrap"
+            style={{fontFamily:"'DM Sans',sans-serif",border:'none',cursor:'pointer'}}
+          >
+            <Icon name="ArrowRight" size={16} />
+            Quiero integrarlo
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Demos ───────────────────────────────────────────────────────────────────
+function Demos() {
+  const [hovered, setHovered] = useState(null);
+
+  const demos = [
+    {
+      id: 'concesionario',
+      icon: 'Car',
+      category: 'Automoción',
+      title: 'Concesionario de Coches',
+      description: 'Descubre cómo un concesionario usa TAIKO para que sus clientes encuentren el vehículo perfecto a través de una conversación natural con el asistente de IA.',
+      tags: ['Catálogo de vehículos', 'Filtros por precio', 'Fichas técnicas'],
+      active: true,
+      gradient: 'linear-gradient(135deg, #0f1e3d 0%, #1e40af 100%)',
+    },
+    {
+      id: 'zapatillas',
+      icon: 'ShoppingBag',
+      category: 'Moda',
+      title: 'Tienda de Zapatillas',
+      description: 'Una tienda de calzado deportivo que muestra cómo el asistente recomienda modelos según talla, estilo y actividad física del cliente.',
+      tags: ['Catálogo de modelos', 'Tallas y colores', 'Comparador'],
+      active: false,
+      gradient: 'linear-gradient(135deg, #1a1a2e 0%, #374151 100%)',
+    },
+  ];
+
+  return (
+    <section id="demos" className="py-32 px-6" style={{background:'#060e22'}}>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-20 reveal">
+          <span className="inline-block text-blue-400 text-sm font-semibold tracking-widest uppercase mb-4">Demos Interactivas</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-5" style={{letterSpacing:'-0.025em'}}>
+            TAIKO en acción
+          </h2>
+          <p className="text-blue-200 text-lg max-w-2xl mx-auto leading-relaxed" style={{fontWeight:300}}>
+            Prueba casos de uso reales y comprueba cómo el asistente atiende a los clientes con tu catálogo.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          {demos.map((demo, i) => (
+            <div key={demo.id}
+              className={`demo-card reveal delay-${i+1} rounded-3xl overflow-hidden relative`}
+              style={{border: demo.active ? '1px solid rgba(96,165,250,0.25)' : '1px solid rgba(255,255,255,0.08)'}}
+              onMouseEnter={() => setHovered(demo.id)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              {/* Top visual */}
+              <div className="relative h-48 flex items-center justify-center overflow-hidden" style={{background:demo.gradient}}>
+                <div className="absolute inset-0 opacity-20" style={{backgroundImage:'radial-gradient(circle at 30% 50%, rgba(255,255,255,0.15) 0%, transparent 60%)'}} />
+                <div className="w-24 h-24 rounded-3xl flex items-center justify-center relative z-10"
+                  style={{background: demo.active ? 'rgba(37,99,235,0.4)' : 'rgba(255,255,255,0.08)', backdropFilter:'blur(10px)', border: demo.active ? '1px solid rgba(96,165,250,0.4)' : '1px solid rgba(255,255,255,0.1)'}}
+                >
+                  <Icon name={demo.icon} size={40} className={demo.active ? 'text-blue-200' : 'text-gray-400'} />
+                </div>
+                {!demo.active && (
+                  <div className="absolute top-4 right-4 rounded-full px-3 py-1 text-xs font-semibold text-gray-300" style={{background:'rgba(255,255,255,0.1)',border:'1px solid rgba(255,255,255,0.15)'}}>
+                    Próximamente
+                  </div>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="p-7" style={{background:'rgba(255,255,255,0.03)'}}>
+                <span className="text-blue-400 text-xs font-semibold tracking-widest uppercase">{demo.category}</span>
+                <h3 className="text-white text-xl font-bold mt-1.5 mb-3" style={{letterSpacing:'-0.02em'}}>{demo.title}</h3>
+                <p className="text-blue-200 text-sm leading-relaxed mb-5" style={{fontWeight:300}}>{demo.description}</p>
+
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {demo.tags.map(tag => (
+                    <span key={tag} className="text-xs px-3 py-1 rounded-full text-blue-300" style={{background:'rgba(37,99,235,0.15)',border:'1px solid rgba(96,165,250,0.2)'}}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {demo.active ? (
+                  <a href="https://frontend-xi-navy-88.vercel.app/" target="_blank" rel="noopener noreferrer"
+                    className="btn-primary inline-flex items-center gap-2.5 text-white font-semibold px-6 py-3 rounded-xl text-sm"
+                    style={{textDecoration:'none',fontFamily:"'DM Sans',sans-serif"}}
+                    onClick={e => e.preventDefault()}
+                  >
+                    <Icon name="Play" size={16} />
+                    Probar Demo Interactiva
+                  </a>
+                ) : (
+                  <button disabled className="inline-flex items-center gap-2 text-sm font-medium px-6 py-3 rounded-xl cursor-not-allowed" style={{background:'rgba(255,255,255,0.05)',color:'rgba(255,255,255,0.3)',border:'1px solid rgba(255,255,255,0.08)',fontFamily:"'DM Sans',sans-serif"}}>
+                    <Icon name="Clock" size={16} />
+                    En desarrollo · Próximamente
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── About ────────────────────────────────────────────────────────────────────
+function About() {
+  const values = [
+    { icon: 'Target', title: 'Accesibilidad', text: 'La IA no debería ser solo para las grandes empresas. Hacemos que estas herramientas estén al alcance de cualquier comercio.' },
+    { icon: 'Lightbulb', title: 'Simplicidad', text: 'Tecnología potente no tiene por qué ser compleja. Diseñamos pensando en personas sin conocimientos técnicos.' },
+    { icon: 'TrendingUp', title: 'Crecimiento real', text: 'Buscamos que nuestros clientes aumenten sus ventas y mejoren la experiencia de sus propios clientes, de forma medible.' },
+  ];
+
+  return (
+    <section id="nosotros" className="py-32 px-6 relative overflow-hidden" style={{background:'#f8faff'}}>
+      <div className="max-w-7xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
+          {/* Left */}
+          <div className="reveal">
+            <span className="inline-block text-blue-600 text-sm font-semibold tracking-widest uppercase mb-4">Sobre Nosotros</span>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6" style={{letterSpacing:'-0.025em',lineHeight:'1.1'}}>
+              Democratizando<br />la IA para el<br />pequeño comercio
+            </h2>
+            <div className="space-y-5 text-gray-500 leading-relaxed">
+              <p>
+                TAIKO nace con una misión clara: acercar las capacidades de inteligencia artificial que tienen las grandes plataformas tecnológicas al pequeño y mediano comercio.
+              </p>
+              <p>
+                Vemos a diario cómo los pequeños negocios compiten en desventaja frente a grandes marketplaces con equipos de tecnología y recursos inmensos. Creemos que eso no es justo, y que la tecnología debería ser una palanca de igualdad.
+              </p>
+              <p>
+                Por eso construimos herramientas sencillas, honestas y efectivas: un panel de gestión de catálogo que cualquiera puede usar, y un asistente de IA que entiende a tus clientes y habla por ti cuando no puedes estar disponible.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: values */}
+          <div className="space-y-6">
+            {values.map((v, i) => (
+              <div key={v.title} className={`reveal delay-${i+1} flex gap-5 p-6 rounded-2xl bg-white`} style={{border:'1px solid #e8edf8',boxShadow:'0 2px 12px rgba(30,64,175,0.05)'}}>
+                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{background:'#eff6ff'}}>
+                  <Icon name={v.icon} size={22} className="text-blue-600" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900 mb-1">{v.title}</h4>
+                  <p className="text-gray-500 text-sm leading-relaxed">{v.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Contact ──────────────────────────────────────────────────────────────────
+function Contact() {
+  const [form, setForm] = useState({ nombre: '', email: '', negocio: '', mensaje: '' });
+  const [state, setState] = useState('idle'); // idle | sending | sent | error
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const e = {};
+    if (!form.nombre.trim()) e.nombre = 'Por favor, introduce tu nombre.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Introduce un email válido.';
+    if (!form.negocio.trim()) e.negocio = 'Indica el nombre de tu negocio.';
+    if (!form.mensaje.trim()) e.mensaje = 'Escribe un mensaje antes de enviar.';
+    return e;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setErrors({});
+    setState('sending');
+    setTimeout(() => setState('sent'), 1500);
+  };
+
+  const fields = [
+    { id: 'nombre', label: 'Nombre completo', type: 'text', placeholder: 'Tu nombre' },
+    { id: 'email', label: 'Email', type: 'email', placeholder: 'tu@email.com' },
+    { id: 'negocio', label: 'Nombre del negocio', type: 'text', placeholder: 'Mi Comercio S.L.' },
+  ];
+
+  return (
+    <section id="contacto" className="py-32 px-6" style={{background:'#060e22'}}>
+      <div className="max-w-3xl mx-auto">
+        <div className="text-center mb-16 reveal">
+          <span className="inline-block text-blue-400 text-sm font-semibold tracking-widest uppercase mb-4">Contacto</span>
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-5" style={{letterSpacing:'-0.025em'}}>
+            ¿Hablamos?
+          </h2>
+          <p className="text-blue-200 text-lg leading-relaxed" style={{fontWeight:300}}>
+            Cuéntanos sobre tu negocio y te explicamos cómo TAIKO puede ayudarte. Sin compromisos.
+          </p>
+        </div>
+
+        <div className="rounded-3xl p-10 reveal" style={{background:'rgba(255,255,255,0.03)',border:'1px solid rgba(255,255,255,0.08)'}}>
+          {state === 'sent' ? (
+            <div className="text-center py-10">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{background:'rgba(34,197,94,0.15)',border:'1px solid rgba(34,197,94,0.3)'}}>
+                <Icon name="CheckCircle" size={36} className="text-green-400" />
+              </div>
+              <h3 className="text-white text-2xl font-bold mb-3">¡Mensaje enviado!</h3>
+              <p className="text-blue-200">Nos pondremos en contacto contigo en breve.</p>
+              <button onClick={() => { setState('idle'); setForm({ nombre:'', email:'', negocio:'', mensaje:'' }); }}
+                className="mt-6 text-blue-400 text-sm underline" style={{background:'none',border:'none',cursor:'pointer'}}>
+                Enviar otro mensaje
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit}>
+              <div className="grid md:grid-cols-2 gap-5 mb-5">
+                {fields.map(f => (
+                  <div key={f.id} className={f.id === 'negocio' ? 'md:col-span-2' : ''}>
+                    <label className="block text-blue-200 text-sm font-medium mb-2">{f.label}</label>
+                    <input
+                      type={f.type}
+                      placeholder={f.placeholder}
+                      value={form[f.id]}
+                      onChange={e => setForm(prev => ({...prev, [f.id]: e.target.value}))}
+                      className="w-full px-4 py-3.5 rounded-xl text-white text-sm"
+                      style={{background:'rgba(255,255,255,0.06)',border:`1px solid ${errors[f.id] ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'}`,fontFamily:"'DM Sans',sans-serif",outline:'none',transition:'border-color 0.2s, box-shadow 0.2s'}}
+                      onFocus={e => { e.target.style.borderColor='#3b82f6'; e.target.style.boxShadow='0 0 0 3px rgba(59,130,246,0.2)'; }}
+                      onBlur={e => { e.target.style.borderColor = errors[f.id] ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'; e.target.style.boxShadow='none'; }}
+                    />
+                    {errors[f.id] && <p className="text-red-400 text-xs mt-1.5">{errors[f.id]}</p>}
+                  </div>
+                ))}
+              </div>
+              <div className="mb-7">
+                <label className="block text-blue-200 text-sm font-medium mb-2">Mensaje</label>
+                <textarea
+                  rows={5}
+                  placeholder="Cuéntanos qué tipo de negocio tienes y qué te gustaría mejorar..."
+                  value={form.mensaje}
+                  onChange={e => setForm(prev => ({...prev, mensaje: e.target.value}))}
+                  className="w-full px-4 py-3.5 rounded-xl text-white text-sm resize-none"
+                  style={{background:'rgba(255,255,255,0.06)',border:`1px solid ${errors.mensaje ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'}`,fontFamily:"'DM Sans',sans-serif",outline:'none',transition:'border-color 0.2s, box-shadow 0.2s'}}
+                  onFocus={e => { e.target.style.borderColor='#3b82f6'; e.target.style.boxShadow='0 0 0 3px rgba(59,130,246,0.2)'; }}
+                  onBlur={e => { e.target.style.borderColor = errors.mensaje ? 'rgba(239,68,68,0.5)' : 'rgba(255,255,255,0.12)'; e.target.style.boxShadow='none'; }}
+                />
+                {errors.mensaje && <p className="text-red-400 text-xs mt-1.5">{errors.mensaje}</p>}
+              </div>
+              <button type="submit" disabled={state==='sending'}
+                className="btn-primary w-full text-white font-semibold py-4 rounded-xl text-base flex items-center justify-center gap-2.5"
+                style={{fontFamily:"'DM Sans',sans-serif",border:'none',cursor: state==='sending' ? 'wait' : 'pointer', opacity: state==='sending' ? 0.8 : 1}}
+              >
+                {state === 'sending' ? (
+                  <><Icon name="Loader" size={18} className="animate-spin" /> Enviando...</>
+                ) : (
+                  <><Icon name="Send" size={18} /> Enviar Consulta</>
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── Footer ───────────────────────────────────────────────────────────────────
+function Footer() {
+  const scrollTo = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  };
+
+  return (
+    <footer style={{background:'#030a18',borderTop:'1px solid rgba(255,255,255,0.06)'}}>
+      <div className="max-w-7xl mx-auto px-6 py-14">
+        <div className="grid md:grid-cols-4 gap-10 mb-12">
+          {/* Brand */}
+          <div className="md:col-span-2">
+            <div className="mb-4">
+              <img src="uploads/logoTaiko-transparent.png" alt="TAIKO" style={{height:'36px',width:'auto',filter:'brightness(0) invert(1) drop-shadow(0 0 8px rgba(96,165,250,0.3))'}} />
+            </div>
+            <p className="text-blue-300 text-sm leading-relaxed max-w-xs" style={{fontWeight:300}}>
+              SaaS para pequeños y medianos comercios. Catálogo inteligente y atención al cliente con IA.
+            </p>
+          </div>
+
+          {/* Nav */}
+          <div>
+            <h5 className="text-white text-sm font-semibold mb-4" style={{fontFamily:"'Sora',sans-serif"}}>Plataforma</h5>
+            <ul className="space-y-2.5">
+              {[['servicios','Servicios'],['demos','Demos'],['nosotros','Nosotros'],['contacto','Contacto']].map(([id, label]) => (
+                <li key={id}>
+                  <button onClick={() => scrollTo(id)} className="text-blue-300 text-sm hover:text-white transition-colors" style={{background:'none',border:'none',cursor:'pointer',fontFamily:"'DM Sans',sans-serif",padding:0}}>
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Contact info */}
+          <div>
+            <h5 className="text-white text-sm font-semibold mb-4" style={{fontFamily:"'Sora',sans-serif"}}>Contacto</h5>
+            <ul className="space-y-2.5">
+              <li className="flex items-center gap-2">
+                <Icon name="Mail" size={14} className="text-blue-400" />
+                <span className="text-blue-300 text-sm">hola@taiko.es</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Icon name="MapPin" size={14} className="text-blue-400" />
+                <span className="text-blue-300 text-sm">España</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style={{borderTop:'1px solid rgba(255,255,255,0.06)'}}>
+          <p className="text-blue-400 text-sm">
+            © 2026 TAIKO. Todos los derechos reservados.
+          </p>
+          <div className="flex items-center gap-4">
+            <span className="text-blue-400 text-xs">Hecho con ❤️ para el pequeño comercio</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+function App() {
+  useReveal();
+  return (
+    <>
+      <Navbar />
+      <Hero />
+      <Services />
+      <Integrations />
+      <Demos />
+      <About />
+      <Contact />
+      <Footer />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+
+<script>
+// Tweaks panel
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#2563eb",
+  "accentDeep": "#1d4ed8",
+  "headingFont": "'Sora',sans-serif",
+  "heroStyle": "dark"
+}/*EDITMODE-END*/;
+
+let tweaks = Object.assign({}, TWEAK_DEFAULTS);
+
+function applyTweaks() {
+  document.documentElement.style.setProperty('--blue-accent', tweaks.accentColor);
+  document.documentElement.style.setProperty('--blue-deep', tweaks.accentDeep);
+  document.querySelectorAll('h1,h2,h3,h4').forEach(el => el.style.fontFamily = tweaks.headingFont);
+}
+
+function setAccent(color, deep) {
+  tweaks.accentColor = color; tweaks.accentDeep = deep;
+  document.querySelectorAll('.tweak-swatch').forEach(s => s.classList.remove('active'));
+  event.target.classList.add('active');
+  applyTweaks();
+  window.parent.postMessage({type:'__edit_mode_set_keys', edits: {accentColor: color, accentDeep: deep}}, '*');
+}
+
+function setFont(val) {
+  tweaks.headingFont = val;
+  if (val === "'Outfit',sans-serif") {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap';
+    document.head.appendChild(l);
+  } else if (val === "'DM Serif Display',serif") {
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap';
+    document.head.appendChild(l);
+  }
+  applyTweaks();
+  window.parent.postMessage({type:'__edit_mode_set_keys', edits: {headingFont: val}}, '*');
+}
+
+function setHeroStyle(val) {
+  tweaks.heroStyle = val;
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+  if (val === 'gradient') {
+    hero.style.background = 'linear-gradient(145deg, #1e3a8a 0%, #1d4ed8 60%, #2563eb 100%)';
+  } else if (val === 'light') {
+    hero.style.background = '#f0f5ff';
+    hero.querySelectorAll('.grad-text').forEach(el => { el.style.backgroundImage = 'linear-gradient(135deg, #1e40af, #2563eb)'; });
+    hero.querySelectorAll('h1').forEach(el => el.querySelectorAll('span:not(.grad-text)').forEach(s => s.style.color = '#0f172a'));
+  } else {
+    hero.style.background = '#060e22';
+  }
+  window.parent.postMessage({type:'__edit_mode_set_keys', edits: {heroStyle: val}}, '*');
+}
+
+// Tweaks protocol
+window.addEventListener('message', e => {
+  if (e.data.type === '__activate_edit_mode') document.getElementById('tweaks-panel').classList.add('open');
+  if (e.data.type === '__deactivate_edit_mode') document.getElementById('tweaks-panel').classList.remove('open');
+});
+window.parent.postMessage({type:'__edit_mode_available'}, '*');
+
+applyTweaks();
+</script>
+</body>
+</html>
