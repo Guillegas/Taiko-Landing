@@ -20,14 +20,6 @@ Este repositorio contiene la **landing page** del producto, desarrollada como pa
 
 ---
 
-## Capturas de pantalla
-
-| Hero | Servicios | Demos |
-|------|-----------|-------|
-| Sección principal con mockup de chat y orbs animados | Tres tarjetas de servicio con card destacada | Demos interactivas por sector (concesionario, moda) |
-
----
-
 ## Stack tecnológico
 
 | Tecnología | Versión | Uso |
