@@ -18,8 +18,8 @@ const CARDS = [
   {
     icon: 'Smartphone',
     title: 'Multiplataforma',
-    description: 'Lleva el asistente de IA a donde están tus clientes: tu web, WhatsApp o Telegram. Responde automáticamente las 24 horas sin que tengas que estar pendiente del móvil.',
-    highlights: ['Integración con WhatsApp Business', 'Integración con Telegram', 'También en tu web', 'Sin instalación técnica'],
+    description: 'Lleva el asistente de IA a donde están tus clientes: tu web, WhatsApp, Telegram o una app nativa Android. Responde automáticamente las 24 horas sin que tengas que estar pendiente del móvil.',
+    highlights: ['Integración con WhatsApp Business', 'Integración con Telegram', 'También en tu web', 'App nativa Android'],
     featured: false,
   },
 ];

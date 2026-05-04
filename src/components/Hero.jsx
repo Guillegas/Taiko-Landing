@@ -164,6 +164,17 @@ export function Hero() {
                 <span className="text-blue-200 text-xs font-medium">Tu catálogo • siempre actualizado</span>
               </div>
             </div>
+
+            {/* Android app badge */}
+            <div
+              className="absolute -bottom-16 right-0 rounded-2xl px-4 py-3"
+              style={{ background: 'rgba(22,163,74,0.15)', backdropFilter: 'blur(20px)', border: '1px solid rgba(22,163,74,0.35)' }}
+            >
+              <div className="flex items-center gap-2">
+                <Icon name="Smartphone" size={14} className="text-green-400" />
+                <span className="text-green-300 text-xs font-medium">App Android disponible</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>

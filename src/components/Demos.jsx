@@ -17,10 +17,11 @@ const DEMOS = [
     icon: 'ShoppingBag',
     category: 'Moda',
     title: 'Tienda de Zapatillas',
-    description: 'Una tienda de calzado deportivo que muestra cómo el asistente recomienda modelos según talla, estilo y actividad física del cliente.',
+    description: 'Una tienda de calzado deportivo que muestra cómo el asistente recomienda modelos según talla, estilo y actividad física del cliente. Prueba exclusivamente en teléfono móvil',
     tags: ['Catálogo de modelos', 'Tallas y colores', 'Comparador'],
-    active: false,
-    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #374151 100%)',
+    active: true,
+    apk: 'https://github.com/xgjimmar945-afk/TFG/releases/download/v1.0.0/TaikoSneakers.apk',
+    gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16a34a 100%)',
   },
 ];
 
@@ -98,7 +99,21 @@ export function Demos() {
                   ))}
                 </div>
 
-                {demo.active ? (
+                {demo.active && demo.apk ? (
+                  <div className="flex flex-col gap-3">
+                    <a
+                      href={demo.apk}
+                      download="TaikoSneakers.apk"
+                      className="btn-primary inline-flex items-center gap-2.5 text-white font-semibold px-6 py-3 rounded-xl text-sm no-underline font-dm"
+                    >
+                      <Icon name="Download" size={16} />
+                      Descargar App Android
+                    </a>
+                    <p className="text-xs text-blue-300 opacity-60">
+                      APK para Android · Permite instalación de fuentes desconocidas
+                    </p>
+                  </div>
+                ) : demo.active && demo.url ? (
                   <a
                     href={demo.url}
                     target="_blank"

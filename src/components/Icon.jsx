@@ -1,5 +1,5 @@
 import {
-  ArrowRight, BookOpen, Bot, Car, Check, CheckCircle, Clock,
+  ArrowRight, BookOpen, Bot, Car, Check, CheckCircle, Clock, Download,
   Globe, Headphones, HelpCircle, LayoutGrid, Lightbulb, Loader,
   Mail, MapPin, Menu, MessageCircle, MessageSquare, Play,
   Send, Shield, ShoppingBag, Smartphone, Target, TrendingUp,
@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 const ICONS = {
-  ArrowRight, BookOpen, Bot, Car, Check, CheckCircle, Clock,
+  ArrowRight, BookOpen, Bot, Car, Check, CheckCircle, Clock, Download,
   Globe, Headphones, HelpCircle, LayoutGrid, Lightbulb, Loader,
   Mail, MapPin, Menu, MessageCircle, MessageSquare, Play,
   Send, Shield, ShoppingBag, Smartphone, Target, TrendingUp,

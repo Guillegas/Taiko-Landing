@@ -25,6 +25,14 @@ const CHANNELS = [
     border: 'rgba(37,99,235,0.25)',
     description: 'Incrusta el widget de TAIKO en tu página web con una sola línea de código. El asistente aparece como un chat flotante listo para atender visitas.',
   },
+  {
+    icon: 'Smartphone',
+    name: 'App Móvil Android',
+    color: '#16a34a',
+    bg: 'rgba(22,163,74,0.1)',
+    border: 'rgba(22,163,74,0.25)',
+    description: 'Despliega una app nativa Android para que tus clientes accedan al catálogo y al asistente de IA directamente desde su móvil, con notificaciones y experiencia premium.',
+  },
 ];
 
 export function Integrations() {
@@ -58,7 +66,7 @@ export function Integrations() {
         </div>
 
         {/* Channel cards */}
-        <div className="grid md:grid-cols-3 gap-6 mb-14">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-14">
           {CHANNELS.map((ch, i) => (
             <div
               key={ch.name}
