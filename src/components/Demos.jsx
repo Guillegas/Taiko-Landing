@@ -20,7 +20,7 @@ const DEMOS = [
     description: 'Una tienda de calzado deportivo que muestra cómo el asistente recomienda modelos según talla, estilo y actividad física del cliente. Prueba exclusivamente en teléfono móvil',
     tags: ['Catálogo de modelos', 'Tallas y colores', 'Comparador'],
     active: true,
-    apk: 'https://github.com/xgjimmar945-afk/TFG/releases/download/v1.0.0/TaikoSneakers.apk',
+    apk: 'https://github.com/xgjimmar945-afk/TFG/releases/download/v1.1.0/app-release.apk',
     gradient: 'linear-gradient(135deg, #1a1a2e 0%, #16a34a 100%)',
   },
 ];
